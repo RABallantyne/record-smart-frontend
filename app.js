@@ -10,6 +10,9 @@ function parseJson(response){
     return response.json();
 }
 
+fetch(ARTIST_URL)
+
+
 
 
 
