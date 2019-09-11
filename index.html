@@ -5,14 +5,64 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
-        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" type="text/css" href="styles.css">
         <title>Record Smart!</title>
     </head>
     <body>
-        <h1>Record all the time!</h1>
+        <nav id="nav-bar">
+            <div class="container">
+                <form id="new-project-form" class="add-project-form">
+                    <h3>Create a New Project!</h3>
+                    <input type="text" name="Project Name" value="" placeholder="Project Name" class="input-text">
+                    <input type="text" name="note" value="" placeholder="Notes" class="input-text">
+                    <input type="submit" name="submit" value="Create New Project" class="submit">
+                </form>
+            </div>
+            <h1>Record Smart</h1>
+            <h1>Create a New Project <button id='new-project-btn'>Add Project</button></h1>
+        </nav>   
+
+        <div id="page-container">
+            
+            <div id="project-card">
+                <h1 id="project-name"></h1>
+                <h2 id="project-notes"></h2>
+                <div id="song-card">
+                    <h2 id="song-name"></h2>
+                    <h3 id="song-note"></h3>
+                    <div id="part-list">
+                    </div>
+                    <div class="new-part-container">
+                        <form id="new-part-form" class="add-part-form">
+                            <input id="new-part-input" type="text" name="Part Name" placeholder="Part Name" class="input-text">
+                            <br>
+                            <input id="new-part-note-input"type="text" name="note" placeholder="Notes" class="input-text">
+                            <br>
+                            <input id="new-part-submit" type="submit" name="submit" value="Add New Part" class="submit">
+                        </form>
+                    </div>    
+                </div>
+            </div>
+            <div id="menu-bar">
+                <h2 id= "project-name-menu"></h2>
+                <div id="project-song-list">
+
+                </div>
+                <div class="new-song-container">
+                    <form id="new-song-form" class="add-song-form">
+                        <input id="new-song-input" type="text" name="Song Name" placeholder="Song Name" class="input-text">
+                        <br>
+                        <input id="new-song-note-input"type="text" name="note" placeholder="Notes" class="input-text">
+                        <br>
+                        <input type="submit" name="submit" value="Add New Song" class="submit">
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+        <footer id="footer-bar">Update Project Details</footer>
       
-        
         <script src="app.js"></script>
     </body>
 </html>

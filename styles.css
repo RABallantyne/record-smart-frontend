@@ -1,0 +1,71 @@
+#nav-bar {
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px;
+}
+#new-project-form {
+   align-self: right;
+}
+
+#page-container {
+    height: auto;
+    display: flex;
+    align-content: stretch;
+    align-items: stretch;
+    border: 5px solid black;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px;
+}
+#menu-bar {
+    flex-basis: 20%;
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px;
+}
+#project-card {
+    
+    flex-basis: 80%;
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px;
+}
+#project-name {
+    text-align: center;
+}
+
+#song-card {
+    border: 2px solid gray;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px;
+}
+
+#part-card {
+    border: 2px solid blue;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px;
+}
+
+#footer-bar {
+    /* display: flex; */
+    bottom:0;
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px;
+    /* position: absolute; */
+}
+
+.container {
+
+    display: none;
+   
+  }
