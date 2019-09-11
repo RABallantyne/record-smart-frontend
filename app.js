@@ -99,17 +99,14 @@ function getSongList(song) {
 }
 
 function renderSongCard(info) {
-    // console.log(info)
+    console.log(info)
     $.songName.innerText = info.song_name
     $.songNote.innerText = info.song_note
-    renderParts(info, info.id)
     $.partInputButton.addEventListener('click', addPart)
-    $.deleteSongButton.addEventListener('click', () => {deleteSong(event, info.id), $.projectSongList.event.remove()})
+    $.deleteSongButton.addEventListener('click', () => deleteSong(event, info.id))
 
-    
 }
 function renderProjects(projects) {
-    console.log(projects)
     projects.forEach(getProjectList)
 }
 
@@ -123,16 +120,14 @@ function getProjectList(project) {
     eachProject.innerText = project.project_name
     eachProject.append(editProjectButton, deleteProjectButton)
     $.projectList.appendChild(eachProject)
+    }
 }
-}
+
 function renderParts(parts, id){
-//    console.log(parts)
     parts.forEach(getPartList)
 }
 
 function getPartList(part) {
-    
-    // console.log(part)
     if (part.song_id === 4) {
     let eachPart = document.createElement('li')
     let editPartButton = document.createElement('button')
