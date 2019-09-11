@@ -1,9 +1,9 @@
 const BASE_URL = "http://localhost:3000"
 // const BASE_URL = "https://quiet-beach-71145.herokuapp.com"
 
-let artistId = 2
 let projectId = 2
-// let songId = 5
+let songId = 4
+let ArtistId
 
 const ARTIST_URL = `${BASE_URL}/artists/`
 const PROJECT_URL = `${BASE_URL}/projects/`
@@ -14,11 +14,7 @@ const $ = {
     projectName: document.querySelector('#project-name'),
     projectNotes: document.querySelector('#project-notes'),
     projectSongList: document.querySelector('#song-list'),
-    projectList: document.querySelector('#project-lists'),
-    newProjectForm: document.querySelector('#new-project-form'),
-    newProjectInput: document.querySelector('#new-project-input'),
-    newProjectNote: document.querySelector('#new-project-note'),
-    newProjectSubmit: document.querySelector('#new-project-submit'),
+    projectList: document.querySelector('#project-list'),
     songCard: document.querySelector('#song-card'),
     songName: document.querySelector('#song-name'),
     songNote: document.querySelector('#song-note'),
@@ -35,31 +31,31 @@ const $ = {
     songNameInput: document.querySelector('#new-song-input'),
     songNoteInput: document.querySelector('#new-song-note-input'),
     newSongForm: document.querySelector('#new-song-form'),
-    songInputButton: document.querySelector('#new-song-submit'),
-    editSongButton: document.querySelector('#edit-song-button'),
-    deleteSongButton: document.querySelector('#delete-song-button')
+    songInputButton: document.querySelector('#new-song-submit')
 }
 
 let isAdding = false
 $.addButton.addEventListener('click', () => {
     isAdding = !isAdding
     if (isAdding) {
-        $.addForm.style.display = 'block'
-        $.newProjectSubmit.addEventListener('click', addProject)
-        
+      $.addForm.style.display = 'block'
+    //   $.addForm.addEventListener('submit', event => {
+    //     event.preventDefault()
+    //     addNewProject(event.target)
+    //   })
+  
     } else {
-        $.addForm.style.display = 'none'
+      $.addForm.style.display = 'none'
     }
-})
+  })
 
 function parseJson(response){
     return response.json();
 }
 
-fetch(PROJECT_URL)
+fetch(ARTIST_URL)
 .then(parseJson)
-.then(renderProjects)
-
+.then(displayProjectList)
 
 fetch(`${PROJECT_URL}${projectId}`)
 .then(parseJson)
@@ -69,21 +65,24 @@ fetch(SONG_URL)
 .then(parseJson)
 .then(renderSongs)
 
+fetch(`${SONG_URL}${songId}`)
+.then(parseJson)
+.then(renderSongCard)
+
 fetch(PART_URL)
 .then(parseJson)
 .then(renderParts)
+
+function displayProjectList(projects){
+console.log(projects)
+}
 
 function displayProject(project) {
     $.projectName.innerText = project.project_name
     $.projectNotes.innerText = project.project_notes
     $.projectNameMenu.innerText = project.project_name
-    
 }
-function getCurrentSong(){
-    fetch(`${SONG_URL}${songId}`)
-    .then(parseJson)
-    .then(renderSongCard)
-}
+
 
 function renderSongs(songs){
     songs.forEach(getSongList)
@@ -94,46 +93,35 @@ function getSongList(song) {
     let eachSong = document.createElement('li')
     eachSong.setAttribute('data-id', song.id)
     eachSong.innerText = song.song_name
+    // console.log(eachSong.dataset.id)
+    eachSong.addEventListener('click', () => songId = eachSong.dataset.id)
     $.projectSongList.append(eachSong)
-    eachSong.addEventListener('click', () => {songId = eachSong.dataset.id, getCurrentSong()})
+    //  console.log(songId)
+    
 }
 
 function renderSongCard(info) {
-    // console.log(info)
     $.songName.innerText = info.song_name
     $.songNote.innerText = info.song_note
-    renderParts(info, info.id)
+    let eachSong = info.id
     $.partInputButton.addEventListener('click', addPart)
-    $.deleteSongButton.addEventListener('click', () => {deleteSong(event, info.id), $.projectSongList.event.remove()})
+    let deleteSongButton = document.createElement('button')
+    deleteSongButton.innerText = "Delete Song"
+    let editSongButton = document.createElement('button')
+    editSongButton.innerText = "Edit Song"
+    $.songCard.append(deleteSongButton, editSongButton)
+    deleteSongButton.addEventListener('click', () => deleteSong(event, eachSong))
+   
+}
 
-    
-}
-function renderProjects(projects) {
-    console.log(projects)
-    projects.forEach(getProjectList)
-}
-
-function getProjectList(project) {
-    if (project.artist_id === 2){
-    let eachProject = document.createElement('li')
-    let editProjectButton = document.createElement('button')
-    editProjectButton.innerText = 'Edit Project Details'
-    let deleteProjectButton = document.createElement('button')
-    deleteProjectButton.innerText = "Remove Project"
-    eachProject.innerText = project.project_name
-    eachProject.append(editProjectButton, deleteProjectButton)
-    $.projectList.appendChild(eachProject)
-}
-}
-function renderParts(parts, id){
-//    console.log(parts)
+function renderParts(parts){
+    // console.log(parts)
     parts.forEach(getPartList)
 }
 
 function getPartList(part) {
-    
-    // console.log(part)
-    if (part.song_id === 4) {
+    console.log(part)
+    if (part.song_id === songId) {
     let eachPart = document.createElement('li')
     let editPartButton = document.createElement('button')
     editPartButton.innerText = "Edit"
@@ -195,30 +183,11 @@ function deletePart(event, part, eachPart){
     eachPart.remove()
 }
 
-function deleteSong(event, song) {
-
-    console.log(song)
-    fetch(`${SONG_URL}${song}`, {
+function deleteSong(event, eachSong) {
+    console.log(eachSong)
+    fetch(`${SONG_URL}${eachSong}`, {
         "method":"DELETE"
     })
-}
-
-function addProject(event) {
-    event.preventDefault()
-    fetch(PROJECT_URL, {
-        "method":"POST",
-        "headers": {
-            "Content-Type": "application/json",
-            "Accept":"application/json"
-        },
-        "body": JSON.stringify({
-            "artist_id": artistId,
-            "project_name": $.newProjectInput.value,
-            "project_notes": $.newProjectNote.value
-        })
-    })
-    .then(parseJson)
-    .then(getProjectList)
-    $.newProjectForm.reset()
+    // eachSong.remove()
 }
 

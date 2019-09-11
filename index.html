@@ -10,16 +10,16 @@
     </head>
     <body>
         <nav id="nav-bar">
-            <div class="container">
+            <h1>Record Smart</h1>
+            <div class="project-container">
+                <ul id="project-lists"></ul>
                 <form id="new-project-form" class="add-project-form">
-                    <h3>Create a New Project!</h3>
-                    <input type="text" name="Project Name" value="" placeholder="Project Name" class="input-text">
-                    <input type="text" name="note" value="" placeholder="Notes" class="input-text">
-                    <input type="submit" name="submit" value="Create New Project" class="submit">
+                    <input id="new-project-input" type="text" name="Project Name" value="" placeholder="Project Name" class="input-text">
+                    <input id="new-project-note" type="text" name="note" value="" placeholder="Notes" class="input-text">
+                    <input id="new-project-submit" type="submit" name="submit" value="Create New Project" class="submit">
                 </form>
             </div>
-            <h1>Record Smart</h1>
-            <h1>Create a New Project <button id='new-project-btn'>Add Project</button></h1>
+            <button id='new-project-btn'>Project Menu</button>
         </nav>   
 
         <div id="page-container">
@@ -30,7 +30,9 @@
                 <div id="song-card">
                     <h2 id="song-name"></h2>
                     <h3 id="song-note"></h3>
-                    <div id="part-list">
+                    <div id="part-list-container">
+                        <ul id="part-list">      
+                        </ul>
                     </div>
                     <div class="new-part-container">
                         <form id="new-part-form" class="add-part-form">
@@ -40,13 +42,17 @@
                             <br>
                             <input id="new-part-submit" type="submit" name="submit" value="Add New Part" class="submit">
                         </form>
-                    </div>    
+                    </div> 
+                    <button id="edit-song-button" type="button">Edit Song</button> 
+                    <button id="delete-song-button" type="button">Delete Song</button> 
+
                 </div>
             </div>
             <div id="menu-bar">
                 <h2 id= "project-name-menu"></h2>
                 <div id="project-song-list">
-
+                    <ul id="song-list">      
+                    </ul>
                 </div>
                 <div class="new-song-container">
                     <form id="new-song-form" class="add-song-form">
@@ -54,14 +60,14 @@
                         <br>
                         <input id="new-song-note-input"type="text" name="note" placeholder="Notes" class="input-text">
                         <br>
-                        <input type="submit" name="submit" value="Add New Song" class="submit">
+                        <input id="new-song-submit" type="submit" name="submit" value="Add New Song" class="submit">
                     </form>
                 </div>
 
             </div>
         </div>
 
-        <footer id="footer-bar">Update Project Details</footer>
+
       
         <script src="app.js"></script>
     </body>
