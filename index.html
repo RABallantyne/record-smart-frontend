@@ -21,15 +21,17 @@
                     <input id="new-project-note" type="text" name="note" value="" placeholder="Notes" class="input-text">
                     <input id="new-project-submit" type="submit" name="submit" value="Create New Project" class="submit">
                 </form>
+                <button  class="large-button" id="exit" onClick="window.location.href=window.location.href">Exit</button>
             </div>
-            <button id='new-project-btn'>Project Menu</button>
+            <button id="new-project-btn" class='large-button'>Project Menu</button>
         </nav>   
 
 
-        <div id="page-container">            
-            <div id="project-card">
+        <div  id="page-container">            
+            <div class = 'page-container' id="project-card">
                 <h1 id="project-name"></h1>
                 <h2 id="project-notes"></h2>
+                <h3 id="notice"></h3>
                 <div id="song-card">
                     <h2 id="song-name"></h2>
                     <h3 id="song-note"></h3>
@@ -43,11 +45,11 @@
                             <br>
                             <input id="new-part-note-input"type="text" name="note" placeholder="Notes" class="input-text">
                             <br>
-                            <input id="new-part-submit" type="submit" name="submit" value="Add New Part" class="submit">
+                            <input class = "small-button" id="new-part-submit" type="submit" name="submit" value="Add New Part" class="submit">
                         </form>
                     </div> 
-                    <button id="edit-song-button" type="button">Edit Song</button> 
-                    <button id="delete-song-button" type="button">Delete Song</button> 
+                    <button class ="small-button" id="edit-song-button" type="button">Edit Song</button> 
+                    <button class = "small-button" id="delete-song-button" type="button">Delete Song</button> 
 
                 </div>
             </div>
@@ -65,7 +67,7 @@
                         <br>
                         <input id="new-song-note-input"type="text" name="note" placeholder="Notes" class="input-text">
                         <br>
-                        <input id="new-song-submit" type="submit" name="submit" value="Add New Song" class="submit">
+                        <input class = "small-button" id="new-song-submit" type="submit" name="submit" value="Add New Song" class="submit">
                     </form>
                 </div>
 

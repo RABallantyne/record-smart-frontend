@@ -1,8 +1,8 @@
 const BASE_URL = "http://localhost:3000"
 // const BASE_URL = "https://quiet-beach-71145.herokuapp.com"
 
-let artistId = 1
-// let projectId = 2
+let artistId = 2
+let projectId = 3
 // let songId = undefined
 // songId = 6
 
@@ -47,98 +47,86 @@ function parseJson(response){
     return response.json()
 }
 
+
 let isAddingProject = false
 $.addProjectButton.addEventListener('click', () => {
     isAddingProject = !isAddingProject
     if (isAddingProject) {
         $.addProjectForm.style.display = 'block'
         $.newProjectSubmit.addEventListener('click', addProject)
-        // $.projectCard.style.display = 'block'
+        
     } else {
         $.addProjectForm.style.display = 'none'
-        // $.projectCard.style.display = 'none'
     }
 })
 
-renderProjects(artistId)
-function renderProjects(artistId) {
-    console.log(artistId)
-    fetch(PROJECT_URL)
-    .then(parseJson)
-    .then(projects => {
-        $.projectList.innerHTML = ""
-        projects.forEach( project => {
-            if (project.artist_id == artistId){
-                let eachProject = document.createElement('li')
-                eachProject.setAttribute('data-id', project.id)
-                let editProjectButton = document.createElement('button')
-                editProjectButton.innerText = 'Edit Project Details'
-                let deleteProjectButton = document.createElement('button')
-                deleteProjectButton.innerText = "Remove Project"
-                eachProject.innerText = project.project_name
-                eachProject.append(editProjectButton, deleteProjectButton)
-                $.projectList.appendChild(eachProject)
-                eachProject.addEventListener('click', () => {
-                    projectId = eachProject.dataset.id, renderProjectCard(projectId), renderSongs(projectId)
-                })
-            }
-        })
-    })
+
+fetch(`${PROJECT_URL}${projectId}`)
+.then(parseJson)
+.then(displayProject)
+
+function displayProject(project) {
+    $.projectName.innerText = project.project_name
+    $.projectNotes.innerText = project.project_notes
+    $.projectNameMenu.innerText = project.project_name
+    // let notice = document.createElement('h2')
+    $.notice.innerText = "Choose a song to continue"
+    // $.notice.append(notice)
+
+    $.songCard.style.display = 'none'
 }
 
-function renderProjectCard(projectId){
-    fetch(`${PROJECT_URL}${projectId}`)
-    .then(parseJson)
-    .then(project => {
-        $.projectName.innerText = project.project_name
-        $.projectNotes.innerText = project.project_notes
-        $.projectNameMenu.innerText = project.project_name
-        $.notice.innerText = "Choose a song to continue"
-        $.songCard.style.display = 'none'
-    })
+fetch(PROJECT_URL)
+.then(parseJson)
+.then(renderProjects)
 
+function renderProjects(projects) {
+    projects.forEach(getProjectList)
 }
 
-function renderSongs(projectId){
-    // console.log(projectId)
-    // event.preventDefault()
+function getProjectList(project) {
+    if (project.artist_id === artistId){
+    let eachProject = document.createElement('li')
+    let editProjectButton = document.createElement('button')
+    editProjectButton.innerText = 'Edit Project Details'
+    let deleteProjectButton = document.createElement('button')
+    deleteProjectButton.innerText = "Remove Project"
+    eachProject.innerText = project.project_name
+    eachProject.append(editProjectButton, deleteProjectButton)
+    $.projectList.appendChild(eachProject)
+    }
+}
+
+renderSongs()
+function renderSongs(){
     fetch(SONG_URL)
     .then(parseJson)
     .then(songs => {
-        // console.log('songs', songs)
+        
         $.projectSongList.innerHTML = ""
+        // console.log(songs)
         songs.forEach(song => {
-            if (song.project_id == projectId) {
-                // console.log('songs', song)
-            let eachSong = document.createElement('li')
-            eachSong.setAttribute('data-id', song.id)
-            eachSong.innerText = song.song_name
-            $.projectSongList.append(eachSong)
-            eachSong.addEventListener('click', () => {
-                songId = eachSong.dataset.id, $.songCard.style.display = 'block', renderSongCard(event, songId), renderParts(event, songId), $.notice.remove()
-                console.log(songId)
-                let deleteId = $.songCard.querySelector('#delete-song-button')
-                deleteId.dataset.songId = songId
-            })
-        }
+        let eachSong = document.createElement('li')
+        eachSong.setAttribute('data-id', song.id)
+        eachSong.innerText = song.song_name
+        $.projectSongList.append(eachSong)
+        eachSong.addEventListener('click', () => {
+            songId = eachSong.dataset.id, $.songCard.style.display = 'block', renderSongCard(event, songId), renderParts(event, songId), $.notice.remove()})
+        })
     })
-    $.songInputButton.addEventListener('click', () => addSong(projectId))
-    })
+    $.songInputButton.addEventListener('click', addSong)
 }
 
 function renderSongCard(event, songId) {
-    // console.log(songId)
     event.preventDefault()
     fetch(`${SONG_URL}${songId}`)
     .then(parseJson)
     .then(info => {
-        // console.log(info)
         $.songName.innerText = info.song_name
     $.songNote.innerText = info.song_note
     $.partInputButton.addEventListener('click', addPart)
-})
-$.deleteSongButton.addEventListener('click', () => deleteSong())
-// deleteSong(songId))
+    $.deleteSongButton.addEventListener('click', () => deleteSong(event, info.id))
+    })
 }
 
 function renderParts(event, songId) {
@@ -147,7 +135,7 @@ function renderParts(event, songId) {
     fetch(PART_URL)
     .then(parseJson)
     .then(parts => {
-        // console.log(parts)
+        console.log(parts)
         parts.forEach( part => {
             if (part.song_id == songId) {
                 let eachPart = document.createElement('li')
@@ -167,6 +155,7 @@ function renderParts(event, songId) {
 }
 
 function addPart(event) {
+    
     event.preventDefault()
     $.partList.innerHTML = ""
     partName = $.partNameInput.value
@@ -192,11 +181,9 @@ function addPart(event) {
     $.newPartForm.reset()
 }
 
-function addSong(projectId) {
+function addSong(event) {
+    console.log(event)
     event.preventDefault()
-    $.songList.innerHTML = ""
-    songName = $.songNameInput.value
-    songNote = $.songNoteInput.value
     fetch(SONG_URL, {
         "method":"POST",
         "headers": {
@@ -209,12 +196,9 @@ function addSong(projectId) {
             "song_note": $.songNoteInput.value
         })
     })
-    .then(parseJson)
-    .then(result => {
-        songName = result.song_name
-        partNote = result.song_note
-        renderSongs(projectId)
-    })
+    // .then(parseJson)
+    
+    .then(renderSongs)
     $.newSongForm.reset()
 }
 
@@ -226,15 +210,12 @@ function deletePart(event, part, eachPart){
     eachPart.style.cssText= "color: red; text-decoration: line-through"
 }
 
-function deleteSong() {
-    let deleteId = $.songCard.querySelector('#delete-song-button')
-        songId = deleteId.dataset.songId
-    console.log(songId)
-    fetch(`${SONG_URL}${songId}`, {
+function deleteSong(event, song) {
+
+    // console.log(song)
+    fetch(`${SONG_URL}${song}`, {
         "method":"DELETE"
     })
-    // eachSong.remove()
-
 }
 
 function addProject(event) {
@@ -252,6 +233,6 @@ function addProject(event) {
         })
     })
     .then(parseJson)
-    .then(renderProjects(artistId))
+    .then(getProjectList)
     $.newProjectForm.reset()
 }
