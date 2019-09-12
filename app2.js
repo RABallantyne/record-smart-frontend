@@ -2,7 +2,7 @@ const BASE_URL = "http://localhost:3000"
 // const BASE_URL = "https://quiet-beach-71145.herokuapp.com"
 
 let projectId = 2
-let songId = 4
+let songId = 5
 let ArtistId
 
 const ARTIST_URL = `${BASE_URL}/artists/`
@@ -74,7 +74,7 @@ fetch(PART_URL)
 .then(renderParts)
 
 function displayProjectList(projects){
-console.log(projects)
+
 }
 
 function displayProject(project) {
@@ -115,7 +115,7 @@ function renderSongCard(info) {
 }
 
 function renderParts(parts){
-    // console.log(parts)
+ 
     parts.forEach(getPartList)
 }
 
