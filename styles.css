@@ -22,6 +22,7 @@ body {
 }
 li {
     font-family: 'IBM Plex Serif', serif;
+    /* color: white; */
     background-color: #8EE4AF;
     margin: 1px 40px 1px 1px;
     padding: 5px;
@@ -32,7 +33,7 @@ li {
 li:hover,
 li {
     cursor: crosshair;
-    color: #EDF5E1;
+    /* color: #EDF5E1; */
     list-style-type: none;
 }
 
@@ -101,6 +102,7 @@ li {
     text-align: center;
 }
 
+
 #song-card {
     border: 2px solid gray;
     background-color: #EDF5E1;
@@ -132,6 +134,7 @@ li {
 }
 
 .project-container {
+    color: black;
     display: none;
     -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
     -moz-animation: fadein 1s; /* Firefox < 16 */
@@ -148,8 +151,8 @@ li {
     margin: 1;
     font-family: 'IBM Plex Serif', serif;
     background: #5CDB95;
-    color: #ffffff;
-    font-family: sans-serif;
+    /* color: #ffffff; */
+    /* font-family: sans-serif; */
     font-size: 1rem;
     cursor: crosshair;
     text-align: center;
@@ -161,21 +164,27 @@ li {
 
 button {
     font: 'IBM Plex Serif', serif;
+    color: black
+    
 }
 
 input {
     font-family: 'IBM Plex Serif', serif;
 }
+#exit {
+    float: right;
+}
 
 .small-button {
     font-family: 'IBM Plex Serif', serif;
+    color: white;
     display: inline-block;
     border: 2;
     
 
-    background: #5CDB95;
-    color: #ffffff;
-    font-family: sans-serif;
+    background: #379683;
+    /* color: #ffffff; */
+    /* font-family: sans-serif; */
     font-size: 1rem;
     cursor: crosshair;
     text-align: center;

@@ -12,7 +12,7 @@ const SONG_URL = `${BASE_URL}/songs/`
 const PART_URL = `${BASE_URL}/parts/`
 
 const $ = {
-    pageContainer: document.querySelector("#page-container"),
+    pageContainer: document.querySelector("#page-container-hidden"),
     projectName: document.querySelector('#project-name'),
     projectNotes: document.querySelector('#project-notes'),
     projectSongList: document.querySelector('#song-list'),
@@ -54,6 +54,7 @@ $.addProjectButton.addEventListener('click', () => {
     if (isAddingProject) {
         $.addProjectForm.style.display = 'block'
         $.newProjectSubmit.addEventListener('click', addProject)
+        $.notice.innerText = "CHOOSE A SONG TO GET RECORDING"
         
     } else {
         $.addProjectForm.style.display = 'none'
@@ -72,15 +73,19 @@ function renderProjects(artistId) {
             if (project.artist_id == artistId){
                 let eachProject = document.createElement('li')
                 eachProject.setAttribute('data-id', project.id)
-                let editProjectButton = document.createElement('button')
-                editProjectButton.innerText = 'Edit Project Details'
-                let deleteProjectButton = document.createElement('button')
-                deleteProjectButton.innerText = "Remove Project"
+                // let editProjectButton = document.createElement('button')
+                // editProjectButton.innerText = 'Edit Project Details'
+                // let deleteProjectButton = document.createElement('button')
+                // deleteProjectButton.innerText = "Remove Project"
                 eachProject.innerText = project.project_name
-                eachProject.append(editProjectButton, deleteProjectButton)
+                // eachProject.append(editProjectButton, deleteProjectButton)
                 $.projectList.appendChild(eachProject)
                 eachProject.addEventListener('click', () => {
-                    projectId = eachProject.dataset.id, renderProjectCard(projectId), renderSongs(projectId)
+                    projectId = eachProject.dataset.id, 
+                    renderProjectCard(projectId), 
+                    renderSongs(event, projectId),
+                    $.pageContainer.setAttribute('id', 'page-container')
+                    
                     // console.log('works', projectId)
                 })
             }
@@ -95,12 +100,12 @@ function renderProjectCard(projectId){
         $.projectName.innerText = project.project_name
         $.projectNotes.innerText = project.project_notes
         $.projectNameMenu.innerText = project.project_name
-        // $.notice.innerText = "Choose a song to continue"
+        $.notice.innerText = "SELECT A SONG AND GET RECORDING"
         // $.songCard.style.display = 'none'
     })
 }
 
-function renderSongs(projectId){
+function renderSongs(event, projectId){
     event.preventDefault()
     fetch(SONG_URL)
     .then(parseJson)
@@ -111,18 +116,25 @@ function renderSongs(projectId){
             if (song.project_id == projectId) {
                 let eachSong = document.createElement('li')
                 eachSong.setAttribute('data-id', song.id)
+                // eachSong.setAttribute("id", "songListTwo")
+                
                 eachSong.innerText = song.song_name
                 $.projectSongList.append(eachSong)
+                
+                console.log(eachSong)
                 eachSong.addEventListener('click', () => {
                     songId = eachSong.dataset.id, 
-                    $.songCard.style.display = 'block', 
+                    console.log(songId)
+            
+                    let deleteId = document.querySelector('#songlistTwo')
+                    $.deleteSongButton.dataset.songId = songId
                     renderSongCard(songId), 
                     renderParts(event, songId), 
                     $.notice.remove()
                 })
             }
         })
-    $.songInputButton.addEventListener('click', addSong)
+        $.songInputButton.addEventListener('click', addSong)
     })
 }
 
@@ -136,8 +148,13 @@ function renderSongCard(songId) {
         $.songNote.innerText = info.song_note
         $.partInputButton.addEventListener('click', addPart)
     })
-$.deleteSongButton.addEventListener('click', () => deleteSong(event, songId))
 }
+
+$.deleteSongButton.addEventListener('click', () => {
+    songId = $.deleteSongButton.dataset.songId,
+    // console.log(songId)
+    deleteSong(event, songId)
+})
 
 function renderParts(event, songId) {
     event.preventDefault()
@@ -150,9 +167,11 @@ function renderParts(event, songId) {
             if (part.song_id == songId) {
                 let eachPart = document.createElement('li')
                 let editPartButton = document.createElement('button')
-                editPartButton.innerText = "Edit"
+                editPartButton.innerText = "edit"
+                editPartButton.setAttribute("class", "small-button")
                 let deletePartButton = document.createElement('button')
-                deletePartButton.innerText = "Finished"
+                deletePartButton.innerText = "finished"
+                deletePartButton.setAttribute("class", "small-button")
                 let partName = part.part_name
                 let partNote = part.part_note
                 eachPart.innerText = `${partName}: ${partNote}`
@@ -186,12 +205,15 @@ function addPart(event) {
     .then(result => {
         partName = result.part_name
         partNote = result.part_note
-        renderParts(event, songId)})
+        renderParts(event, songId)
+    })
     $.newPartForm.reset()
 }
 
 function addSong(event) {
     event.preventDefault()
+    songName = $.songNameInput.value
+    songNote = $.songNoteInput.value
     fetch(SONG_URL, {
         "method":"POST",
         "headers": {
@@ -205,8 +227,12 @@ function addSong(event) {
         })
     })
     .then(parseJson)
-    
-    // .then(renderSongs)
+    .then(result =>{
+        console.log(result)
+        songName = result.song_name
+        songNote = result.song_note
+        renderSongs(event, projectId)
+    })
     $.newSongForm.reset()
 }
 
@@ -241,6 +267,6 @@ function addProject(event) {
         })
     })
     .then(parseJson)
-    .then(getProjectList)
+    // .then(getProjectList)
     $.newProjectForm.reset()
 }

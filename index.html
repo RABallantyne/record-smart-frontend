@@ -13,26 +13,25 @@
     <body>
 
         <nav id="nav-bar">
-            <h1>Record Smart</h1>
+            <h1>RECORD SMART</h1>
             <div class="project-container">
                 <ul id="project-lists"></ul>
                 <form id="new-project-form" class="add-project-form">
                     <input id="new-project-input" type="text" name="Project Name" value="" placeholder="Project Name" class="input-text">
                     <input id="new-project-note" type="text" name="note" value="" placeholder="Notes" class="input-text">
-                    <input id="new-project-submit" type="submit" name="submit" value="Create New Project" class="submit">
+                    <input class="small-button" id="new-project-submit" type="submit" name="submit" value="Create New Project" class="submit">
                 </form>
-                <button  class="large-button" id="exit" onClick="window.location.href=window.location.href">Exit</button>
             </div>
-            <button id="new-project-btn" class='large-button'>Project Menu</button>
+            <button id="new-project-btn" class='large-button'>project menu</button>
         </nav>   
-
-
-        <div  id="page-container">            
+        
+        
+        <div  id="page-container-hidden">            
             <div class = 'page-container' id="project-card">
                 <h1 id="project-name"></h1>
                 <h2 id="project-notes"></h2>
                 <h3 id="notice"></h3>
-                <div id="song-card">
+                <div id="song-card-hidden">
                     <h2 id="song-name"></h2>
                     <h3 id="song-note"></h3>
                     <div id="part-list-container">
@@ -45,16 +44,16 @@
                             <br>
                             <input id="new-part-note-input"type="text" name="note" placeholder="Notes" class="input-text">
                             <br>
-                            <input class = "small-button" id="new-part-submit" type="submit" name="submit" value="Add New Part" class="submit">
+                            <input class = "small-button" id="new-part-submit" type="submit" name="submit" value="add new part" class="submit">
                         </form>
                     </div> 
                     <!-- <button class ="small-button" id="edit-song-button" type="button">Edit Song</button>  -->
-                    <button class = "small-button" id="delete-song-button" type="button">Delete Song</button> 
-
+                    <button class = "small-button" id="delete-song-button" type="button">delete song</button> 
+                    
                 </div>
             </div>
-
-
+            
+            
             <div id="menu-bar">
                 <h2 id= "project-name-menu"></h2>
                 <div id="project-song-list">
@@ -67,12 +66,13 @@
                         <br>
                         <input id="new-song-note-input"type="text" name="note" placeholder="Notes" class="input-text">
                         <br>
-                        <input class = "small-button" id="new-song-submit" type="submit" name="submit" value="Add New Song" class="submit">
+                        <input class = "small-button" id="new-song-submit" type="submit" name="submit" value="add new song" class="submit">
                     </form>
                 </div>
-
+                
             </div>
         </div>     
+        <button  class="large-button" id="exit" onClick="window.location.href=window.location.href">exit</button>
         <script src="app.js"></script>
     </body>
 </html>
