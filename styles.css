@@ -78,6 +78,7 @@ li {
     padding: 5px;
     margin: 5px;
 }
+
 #menu-bar {
     background-color: #EDF5E1;
     flex-basis: 20%;
@@ -86,6 +87,7 @@ li {
     padding: 5px;
     margin: 5px;
 }
+
 #project-card {
     background-color: #EDF5E1;
     flex-basis: 80%;
@@ -94,6 +96,7 @@ li {
     padding: 5px;
     margin: 5px;
 }
+
 #project-name {
     text-align: center;
 }
@@ -157,7 +160,6 @@ li {
 }
 
 button {
-    
     font: 'IBM Plex Serif', serif;
 }
 
@@ -196,6 +198,7 @@ input {
 #new-project-btn:active {
     transform: scale(0.9);
 }
+
 #exit {
     align-self: center
 }
