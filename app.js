@@ -118,6 +118,7 @@ function renderSongs(event, projectId){
             if (song.project_id == projectId) {
                 let eachSong = document.createElement('li')
                 eachSong.setAttribute('data-id', song.id)
+                eachSong.setAttribute('data-project', song.project_id)
                 // eachSong.setAttribute("id", "songListTwo")
                 
                 eachSong.innerText = song.song_name
@@ -128,8 +129,9 @@ function renderSongs(event, projectId){
                     songId = eachSong.dataset.id, 
                     console.log(songId)
             
-                    let deleteId = document.querySelector('#songlistTwo')
-                    $.deleteSongButton.dataset.songId = songId
+                    // let deleteId = document.querySelector('#songlistTwo')
+                    $.deleteSongButton.dataset.songId = songId,
+                    $.deleteSongButton.dataset.songProject = projectId,
                     renderSongCard(songId), 
                     renderParts(event, songId), 
                     $.notice.remove()
@@ -155,8 +157,12 @@ function renderSongCard(songId) {
 
 $.deleteSongButton.addEventListener('click', () => {
     songId = $.deleteSongButton.dataset.songId,
-    // console.log(songId)
-    deleteSong(event, songId)
+    projectId = $.deleteSongButton.dataset.songProject,
+    console.log(projectId),
+    deleteSong(event, songId, projectId),
+    console.log(projectId),
+    setTimeout(renderSongs(event, projectId), 500)
+
 })
 
 function renderParts(event, songId) {
@@ -230,7 +236,7 @@ function addSong(event) {
         })
     })
     .then(parseJson)
-    .then(result =>{
+    .then(result => {
         songName = result.song_name
         songNote = result.song_note
         renderSongs(event, projectId)
@@ -272,10 +278,15 @@ function deletePart(event, part, eachPart){
     eachPart.style.cssText= "color: red; text-decoration: line-through"
 }
 
-function deleteSong(event, song) {
-    console.log(song)
+function deleteSong(event, song, project) {
+    console.log(project)
     fetch(`${SONG_URL}${song}`, {
         "method":"DELETE"
     })
+    $.songName.innerText = ""
+    $.songNote.innerText = ""
+    $.songList.innerText = ""
+    $.partList.innerHTML = ""
+    // setTimeout(renderSongs(event, project), 10)
 
 }
