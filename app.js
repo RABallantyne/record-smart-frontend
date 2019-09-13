@@ -65,6 +65,7 @@ $.addProjectButton.addEventListener('click', () => {
 // $.
 renderProjects(artistId)
 function renderProjects(artistId) {
+    $.projectList.innerHTML = ""
     fetch(PROJECT_URL)
     .then(parseJson)
     .then(projects => {
@@ -84,7 +85,8 @@ function renderProjects(artistId) {
                     projectId = eachProject.dataset.id, 
                     renderProjectCard(projectId), 
                     renderSongs(event, projectId),
-                    $.pageContainer.setAttribute('id', 'page-container')
+                    $.pageContainer.setAttribute('id', 'page-container'),
+                    $.addProjectForm.style.display = 'none'
                     
                     // console.log('works', projectId)
                 })
@@ -131,6 +133,7 @@ function renderSongs(event, projectId){
                     renderSongCard(songId), 
                     renderParts(event, songId), 
                     $.notice.remove()
+                    
                 })
             }
         })
@@ -228,12 +231,37 @@ function addSong(event) {
     })
     .then(parseJson)
     .then(result =>{
-        console.log(result)
         songName = result.song_name
         songNote = result.song_note
         renderSongs(event, projectId)
     })
     $.newSongForm.reset()
+}
+function addProject(event) {
+    event.preventDefault()
+    projectName = $.newProjectInput.value
+    projectNote= $.newProjectNote.value
+    fetch(PROJECT_URL, {
+        "method":"POST",
+        "headers": {
+            "Content-Type": "application/json",
+            "Accept":"application/json"
+        },
+        "body": JSON.stringify({
+            "artist_id": artistId,
+            "project_name": $.newProjectInput.value,
+            "project_notes": $.newProjectNote.value
+        })
+    })
+    .then(parseJson)
+    .then(result => {
+        ArtistId = 1
+        projectName = result.project_name
+        projectNote = result.project_notes
+        renderProjects(ArtistId)
+
+    })
+    $.newProjectForm.reset()
 }
 
 function deletePart(event, part, eachPart){
@@ -250,23 +278,4 @@ function deleteSong(event, song) {
         "method":"DELETE"
     })
 
-}
-
-function addProject(event) {
-    event.preventDefault()
-    fetch(PROJECT_URL, {
-        "method":"POST",
-        "headers": {
-            "Content-Type": "application/json",
-            "Accept":"application/json"
-        },
-        "body": JSON.stringify({
-            "artist_id": artistId,
-            "project_name": $.newProjectInput.value,
-            "project_notes": $.newProjectNote.value
-        })
-    })
-    .then(parseJson)
-    // .then(getProjectList)
-    $.newProjectForm.reset()
 }
