@@ -1,5 +1,5 @@
 const BASE_URL = "http://localhost:3000"
-// const BASE_URL = "https://quiet-beach-71145.herokuapp.com"
+
 
 let artistId = 1
 let projectId = 3
